@@ -1,0 +1,53 @@
+\documentclass[a5paper, landscape]{article}
+
+\usepackage[a5paper,margin=1in,landscape]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1ex}
+\setlength{\itemsep}{3ex}
+
+\setlength{\fboxsep}{0pt}
+
+\begin{document}
+
+Let $(a_i)_{i \in [1..N]}$ and $(b_i)_{i \in [1 \ldots N]}$ be different columns in a table $T$ with $N$ rows.
+
+Let $A = \{ a_i : i \in [1 \ldots N] \}$ and $B = \{ b_i : i \in [1 \ldots N] \}$ The sets where $a_i$ and $b_i$ live in.
+
+Let $P(a,b)$ be the probability that $(a,b)$ is in $T$. E.g:
+\[
+  P(a,b) = \frac{| \{ i \in [1 \ldots N] : a_i = a \mbox{ and } b_i = b\} |}{| \{ i \in [1 \ldots N] : a_i = a \} |}
+\]
+
+Define $Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]})$ as:
+\[
+\begin{array}{lll}
+ Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &
+ = \sum_{a \in A} \frac{|\{ b \in B : P(a,b) > 0 \}| - 1}{|A| \cdot (|B| - 1)}
+& ; if |B| > 1 \\
+ Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &  = 0 & ; if |B| \leq 1 
+\end{array}
+\]
+
+or alternatively as:
+
+\[
+\begin{array}{lll}
+ Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &
+ = \frac{|\{ (a,b) : a \in A, b \in B , P(a,b) > 0 \}| - |A|}{|A| \cdot (|B| - 1)}
+& ; if |B| > 1 \\
+ Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &  = 0 & ; if |B| \leq 1 
+\end{array}
+\]
+
+If $B$ is fully functional dependent by $A$ (For every $a \in A$ exists exactly one $b \in B$ so that $a_i = a$ and $b_i = b$ for an $i \in [1\ldots N]$) then $Q(..) = 0$.
+Otherwise $Q(..) > 0$.
+
+If $|B| > 1$ and for every $a \in A$ and $b \in B$ exists an $i \in [1 \ldots N]$ so that $a_i = a$ and $b_i = b$ then $Q(..) = 1$.
+
+So $0 \leq Q(..) \leq 1$.
+
+\end{document}
