@@ -1,6 +1,6 @@
-\documentclass[a5paper, landscape]{article}
+\documentclass[a4paper]{article}
 
-\usepackage[a5paper,margin=1in,landscape]{geometry}
+\usepackage[a4paper,margin=1in]{geometry}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -13,41 +13,143 @@
 
 \begin{document}
 
-Let $(a_i)_{i \in [1..N]}$ and $(b_i)_{i \in [1 \ldots N]}$ be different columns in a table $T$ with $N$ rows.
 
-Let $A = \{ a_i : i \in [1 \ldots N] \}$ and $B = \{ b_i : i \in [1 \ldots N] \}$ The sets where $a_i$ and $b_i$ live in.
+\section{Introduction}
+Given is a tabular dataset $T$.
+Observation tells us that sometimes one can predict some (im-)possible values in one column if the value of an other column is given.
 
-Let $P(a,b)$ be the probability that $(a,b)$ is in $T$. E.g:
+Best example is the \texttt{user-id} and the \texttt{student-id} in a list of all marks for homework in a semester.
+Both values usually appear many times but every \texttt{student-id} is matches exactly to one \texttt{user-id}.
+We could give a function $f : \texttt{student-id} \to \texttt{user-id}$.
+So the \texttt{user-id} is functional dependent to the \texttt{student-id}.
+In this example you can we have a special case called bijection as the \texttt{student-id} is functional dependent to the \texttt{user-id} too.
+In this case we can easy remove one of these columns and use the function to create the value of this column for a row if needed.
+
+An other example would be the columns \texttt{patient-id} and \texttt{gender} in a table of clinical measurements. 
+Value in the column \texttt{patient-id} may or may not repeated.
+Usually the gender don't change and we have a function $f : \texttt{patient-id} \to \{ \mbox{female}, \mbox{male} \}$.
+As there are usually more than two patients it is obvious that there is no function that maps from \texttt{gender} into \texttt{patient-id}. 
+
+To check if two columns are functional dependent we can do as follow:
+\begin{itemize}
+\item Build the sets of all used values.\\ (e.g: $A = \{ x : x \mbox{ is in the first column} \}$ and $B = \{ x : x \mbox{ is in the second column} \}$)
+\item Consider the relation $\sim_T$ between $A$ and $B$ given by the tables. With $a \sim_T b \Leftrightarrow a$ and $b$ are in the same row in the table for $a \in A$ and $b \in B$.
+\item $B$ is functional dependent by $A$ iff for every $a \in A$ there is exactly one $b \in B$.
+\end{itemize}
+
+But what is if there is no mapping possible but we know that there are some limitations in $B$ for some values in $A$.
+For example that for a table $A = \{ \mbox{female}, \mbox{male} \}$ and $B = \{ \mbox{pregnant}, \mbox{not-pregnant} \}$.
+In this case we might have female $\sim_T$ pregnant, female $\sim_T$ not-pregnant and male $\sim_T$ not-pregnant but never \mbox{male $\sim_T$ pregnant}.
+Such a case is logically dependency.
+We would get a function $F$ that maps $A$ to the powerset of $B$ by $F(a) = \{ b \in B : a \sim_T b \}$. 
+In this case $F(\mbox{female}) \{ \mbox{pregnant}, \mbox{not-pregnant} \}$ and $F(\mbox{male}) \{ \mbox{not-pregnant} \}$.
+
+Using this we can say:
+\begin{itemize}
+\item $B$ is logical dependent by $A$ in table $T$ iff $|F(a)| < |B|$ for at least one $a \in A$.
+\item $B$ is functional dependent by $A$ in table $T$ iff $|F(a)| = 1$ for all $a \in A$.
+\item There is a bijection between $A$ and $B$ iff $B$ is functional dependent by $A$ and $A$ is functional dependent by $B$.
+\end{itemize}
+
+An open question is: can we find a function $Q$ that takes two columns of a table and give us a number that gives us a feeling how good the logical dependency between this two columns is?
+
+
+
+\section{Definitions}
+
+\begin{enumerate}
+\item The set $[m \ldots n] = \{ m, m + 1, m + 2, \ldots, n \}$ for $m \leq n$.
+
+\item $T$ in a table with $M \geq 2$ columns and $N \geq 1$ rows.
+
+\item Consider two different columns in $T$.
+      Let this be $(a_i)_{i \in [1 \ldots N]}$ and $(b_i)_{i \in [1 \ldots N]}$.
+
+\item Let $A$ and $B$ the sets of the present values in this columns.
+      \\ $A = \{ a_i : i \in [1 \ldots N] \}$ and $B = \{ b_i : i \in [1 \ldots N] \}$.
+
+\item The table $T$ produces a relation $\sim_T$ between $A$ and $B$ by $a \sim_T b$ if and only if there is a row in $T$ where $a \in A$ and $b \in B$ are in the same row.
+      With other words: 
+      \[
+          \mbox{for all } a \in A, b \in B \mbox{ it holds that }  a \sim_T b \Leftrightarrow \mbox{ there is an } i \in [1..N] \mbox{ with }a_i = a \mbox{ and } b_i = b
+      \]
+
+\item The function $F(a) = \{ b \in B : a \sim_T b \}$ gives us all possible $b \in B$ for a given $a \in A$.
+
+%\item Let $P(a,b)$ be the conditional probability that we find a row with $(a,b)$ is in $T$ for a given $a$. E.g:
+%\[
+%  P(a,b) = \frac{| \{ i \in [1 \ldots N] : a_i = a \mbox{ and } b_i = b\} |}{| \{ i \in [1 \ldots N] : a_i = a \} |}
+%\]
+\end{enumerate}
+
+\section{The function $Q_T$}
+
+The wishlist:
+\begin{itemize}
+\item $Q_T(A,B)$ should be zero if $T$ produces a function $f : A \to B$
+\item $Q_T(A,B)$ should be one if for every $a \in A$ and $b \in B$ the relation $a \sim_T b$ holds.
+\item Every other value of $Q_T(A,B)$ should be between zero and one
+\end{itemize}
+
+
+For a given $a \in A$ we can count how many $b \in B$ holds $a \sim_T b$ by $n = |F(a)| = |\{ b \in B : a \sim_T b \}|$
+The more values are excluded the closer we are to a function that takes this $a$ and gives us a $b$.
+If there is a function from $A$ to $B$ for this value $a$ then $n = 1$.
+By the definition of our Table (not empty) and $A, B$ (= sets of the actual values in the table) we know that $n$ has to be greater or equal to 1.
+By subtracting 1 we get: $n' = |F(a)| - 1 \geq 0$
+
+If $a \sim_T b$ for all $b\in B$ for this $a \in A$ then $n' = |B| - 1$.
+Assuming $|B| > 1$ we can divide this value and get the function:
 \[
-  P(a,b) = \frac{| \{ i \in [1 \ldots N] : a_i = a \mbox{ and } b_i = b\} |}{| \{ i \in [1 \ldots N] : a_i = a \} |}
+  Q_B(a) = \frac{|F(a)| - 1}{|B| - 1}
+\]
+that maps to the interval $[0, 1]$.
+We can sum this up by 
+\[
+  s = \sum_{a \in A} Q_B(a)
+  = \sum_{a \in A} \frac{|F(a)| - 1}{|B| - 1}
+  = \frac{1}{|B| - 1} \sum_{a \in A} (|F(a)| - 1)
 \]
 
-Define $Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]})$ as:
+We can easily see that $s \in [0, |A|]$.
+
+Dividing $|A|$ gives us one solution to our wishlist for $|B| > 1$:
+\[
+  s' = \frac{s}{|A|}
+  = \frac{1}{|A| \cdot (|B| - 1)} \sum_{a \in A} (|F(a)| - 1)
+  = \frac{1}{|A| \cdot (|B| - 1)} \sum_{a \in A} (|\{ b \in B : a \sim_T b \}| - 1)
+\]
+If we put $a$ in the set we can omit the sum and get the easier term:
+\[
+  s'' = \frac{|\{ (a,b) : a \in A, b \in B \mbox{ and } a \sim_T b \}| - |A|}{|A| \cdot (|B| - 1)}
+\]
+
+For the special case that there is only one value in column $B$ (e.g: $B = \{ b \}$) we have the obvious constant function $f(a) = b$.
+This leads to our final definition:
+
 \[
 \begin{array}{lll}
- Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &
- = \sum_{a \in A} \frac{|\{ b \in B : P(a,b) > 0 \}| - 1}{|A| \cdot (|B| - 1)}
-& ; if |B| > 1 \\
- Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &  = 0 & ; if |B| \leq 1 
+ Q_T( A, B ) & = s'' & ; if |B| > 1 \\
+ Q_T(A, B)   &  = 0  & ; if |B| \leq 1 
 \end{array}
 \]
 
-or alternatively as:
 
-\[
-\begin{array}{lll}
- Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &
- = \frac{|\{ (a,b) : a \in A, b \in B , P(a,b) > 0 \}| - |A|}{|A| \cdot (|B| - 1)}
-& ; if |B| > 1 \\
- Q((a_i)_{i \in [1..N]}, (b_i)_{i \in [1 \ldots N]}) &  = 0 & ; if |B| \leq 1 
-\end{array}
-\]
+\section{Additionally thoughts}
+The relation $\sim_T$ builds a bipartite graph.
+With $A$ as nodes on one side, $B$ as nodes on the other side and edges when $a \sim_T b$.
 
-If $B$ is fully functional dependent by $A$ (For every $a \in A$ exists exactly one $b \in B$ so that $a_i = a$ and $b_i = b$ for an $i \in [1\ldots N]$) then $Q(..) = 0$.
-Otherwise $Q(..) > 0$.
+We can add a weight to the edges by the conditional probability $P(b|a)$.
+Question: Is it possible that this gives some additional insights?
 
-If $|B| > 1$ and for every $a \in A$ and $b \in B$ exists an $i \in [1 \ldots N]$ so that $a_i = a$ and $b_i = b$ then $Q(..) = 1$.
 
-So $0 \leq Q(..) \leq 1$.
+\section{Open questions}
+\begin{itemize}
+\item how to interpret the non obvious values $> 0$ and $< 1$?
+\item how to compare two tables (e.g. real and synthetic data)?
+\item What additional information about a table we can produce with this?
+\end{itemize}
+
+
 
 \end{document}
