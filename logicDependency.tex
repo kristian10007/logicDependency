@@ -4,12 +4,16 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+%\usepackage{amsthm}
 
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{1ex}
 \setlength{\itemsep}{3ex}
 
 \setlength{\fboxsep}{0pt}
+
+%\theoremstyle{definition}
+\newtheorem{definition}{Definition}
 
 \begin{document}
 
@@ -150,6 +154,43 @@ Question: Is it possible that this gives some additional insights?
 \item What additional information about a table we can produce with this?
 \end{itemize}
 
+
+
+\section{Interprations}
+Concider $n_a = |A| \times Q_T(A,B)$. 
+
+\begin{definition}[Signature $S_{T,B}(A)$]
+  Let $s_{T,B}(a) = |\{ b \in B : a \sim_T b \}|$.
+
+  Let $(a_i)_{i \in [1 \ldots |A|]} \in A$ with $a_i \neq a_j$ for $i \neq j$.
+  So $A = \{ a_i : i \in [1 \ldots |A|] \}$.
+
+  Let $a_i$ is sorted in such way that $a_i \leq a_j$ for $i < j$.
+
+  Define the signature $S_{T,B}(A)$ of $~_T$ for column $A$ to column $B$ as the following vector:
+  \begin{equation}
+    S_{T,B}(A) = (s_{T,B}(a_1), s_{T,B}(a_2), s_{T,B}(a_3), \ldots )
+  \end{equation}
+\end{definition}
+
+
+
+\begin{tabular}{l|l}
+ $|A| \times Q_T(A,B)$ & signature $S_{T,B}(A)$ \\\hline
+ 0     & 1111 \\
+ 1/3   & 1112 \\
+ 2/3   & 1113 1122 \\
+ 1     & 1114 1123 1222 \\
+ 1 1/3 & 1124 1133 1223 2222 \\
+ 1 2/3 & 1134 1224 1233 2223 \\
+ 2     & 1144 1234 2224 2233 \\
+ 2 1/3 & 1244 2234 1334 2333 \\
+ 2 2/3 & 1344 2244 2334 3333 \\
+ 3     & 1444 2344 3334 \\
+ 3 1/3 & 2444 3344 \\
+ 3 2/3 & 3444 \\
+ 4     & 4444
+\end{tabular}
 
 
 \end{document}
