@@ -1,6 +1,7 @@
 \documentclass[a4paper]{article}
 
 \usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -173,7 +174,8 @@ Concider $n_a = |A| \times Q_T(A,B)$.
   \end{equation}
 \end{definition}
 
-
+The signature gives us a hint how the relation is distributed.
+The sorting helps to normalize the signature and leads to lesser cases to consider as you could simply rename the items in the sets to get a equivalent relation with different sorting.
 
 \begin{tabular}{l|l}
  $|A| \times Q_T(A,B)$ & signature $S_{T,B}(A)$ \\\hline
@@ -191,6 +193,44 @@ Concider $n_a = |A| \times Q_T(A,B)$.
  3 2/3 & 3444 \\
  4     & 4444
 \end{tabular}
+
+
+
+Example for a "1234" table:\\
+\begin{tabular}[b]{c|c}
+  Person  & Favorite Ice \\\hline
+  Alice   & Chocolate    \\
+  Dave    & Vanilla      \\
+  Charlie & Raspberry    \\
+  Bob     & Blueberry    \\
+  Dave    & Blueberry    \\
+  Bob     & Vanilla      \\
+  Charlie & Chocolate    \\
+  Dave    & Chocolate    \\
+  Charlie & Vanilla      \\
+  Dave    & Raspberry    \\
+\end{tabular}
+\hfill
+\includegraphics[width=10cm]{images/Example1.pdf}
+
+Example for a "1144" table:\\
+\begin{tabular}[b]{c|c}
+  Person  & Favorite Ice \\\hline
+  Alice   & Chocolate    \\
+  Dave    & Vanilla      \\
+  Charlie & Raspberry    \\
+  Charlie & Blueberry    \\
+  Dave    & Blueberry    \\
+  Bob     & Vanilla      \\
+  Charlie & Chocolate    \\
+  Dave    & Chocolate    \\
+  Charlie & Vanilla      \\
+  Dave    & Raspberry    \\
+\end{tabular}
+\hfill
+\includegraphics[width=10cm]{images/Example2.pdf}
+
+
 
 
 \end{document}
