@@ -142,6 +142,17 @@ This leads to our final definition:
 
 
 \section{Additionally thoughts}
+\subsection{More than one column as source or destination}
+Assume we have a table with the columns \texttt{X}, \texttt{Y} and \texttt{B}.
+Assume we want to check if the table gives us a function $f(x,y) = b$.
+%Again let be
+%  $B = \{ b : b \mbox{ is in column \texttt{B}} \}$,
+%  $X = \{ x : x \mbox{ is in column \texttt{X}} \}$ and 
+%  $Y = \{ y : y \mbox{ is in column \texttt{Y}} \}$.
+  Create a new column \texttt{A} with $a_i = (x_i, y_i)$ for all rows $i \in [1 \ldots N]$. 
+  Using this new column we can use $Q_T(A,B)$ to test the quality of logical dependency between $A \subseteq X \times Y$ and $B$. 
+
+\subsection{Bipatite Graphs}
 The relation $\sim_T$ builds a bipartite graph.
 With $A$ as nodes on one side, $B$ as nodes on the other side and edges when $a \sim_T b$.
 
