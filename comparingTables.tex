@@ -1,0 +1,16 @@
+\section{Comparing two Tables}
+
+Let $T$ and $T'$ be tables with columns \texttt{A} and \texttt{B}.
+$T'$ might be a synthetic generated dataset from the real dataset $T$.
+So the content in the columns might differ between the tables.
+
+Let $F_{\tau, M}(a) = \{ x \in M : a \sim_\tau x \}$
+
+\begin{equation}
+  \Delta_{T,T'}(A, B) = \frac{1}{|A|} 
+    \sum_{a \in A}
+    \frac{\left|F_{T, B}(a) \cap F_{T', B}(a)\right|}{|F_{T, B}(a)|}
+    \cdot
+    \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B \setminus F_{T, B}(a)|}
+\end{equation}
+

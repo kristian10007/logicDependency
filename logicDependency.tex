@@ -19,7 +19,9 @@
 
 \begin{document}
 
+\tableofcontents
 
+\newpage
 \section{Introduction}
 Given is a tabular dataset $T$.
 Observation tells us that sometimes one can predict some (im-)possible values in one column if the value of an other column is given.
@@ -141,6 +143,12 @@ This leads to our final definition:
 \]
 
 
+\newpage
+\input{comparingTables.tex}
+
+
+
+\newpage
 \section{Additionally thoughts}
 \subsection{More than one column as source or destination}
 Assume we have a table with the columns \texttt{X}, \texttt{Y} and \texttt{B}.
@@ -160,7 +168,7 @@ We can add a weight to the edges by the conditional probability $P(b|a)$.
 Question: Is it possible that this gives some additional insights?
 
 
-\section{Open questions}
+\subsection{Open questions}
 \begin{itemize}
 \item how to interpret the non obvious values $> 0$ and $< 1$?
 \item how to compare two tables (e.g. real and synthetic data)?
@@ -170,5 +178,6 @@ Question: Is it possible that this gives some additional insights?
 
 
 \input{tree.tex}
+
 
 \end{document}
