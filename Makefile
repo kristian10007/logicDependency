@@ -1,6 +1,6 @@
 
-logicDependency.pdf: logicDependency.tex
+logicDependency.pdf: logicDependency.tex tree.tex
 	cd images && make all
-	pdflatex $<
+	pdflatex logicDependency.tex
 
 
