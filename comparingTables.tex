@@ -4,7 +4,21 @@ Let $T$ and $T'$ be tables with columns \texttt{A} and \texttt{B}.
 $T'$ might be a synthetic generated dataset from the real dataset $T$.
 So the content in the columns might differ between the tables.
 
-Let $F_{\tau, M}(a) = \{ x \in M : a \sim_\tau x \}$
+As before $a \sim_T b$ is true if and only if $a$ in column \texttt{A} and $b$ in column \texttt{B} are in the same row in table $T$.
+Now we have additionally $a \sim_{T'} b$ is true if and only if $a$ in column \texttt{A} and $b$ in column \texttt{B} are in the same row in table~$T'$.
+
+Let $\tau$ be $T$ or $T'$. Define $F_{\tau, B} : A \to \mathcal{P}(B)$ as $F_{\tau, B}(a) = \{ b \in B : a \sim_\tau b \}$
+
+\begin{equation}
+  \Delta_1(a) = 
+    \frac{\left|F_{T, B}(a) \cap F_{T', B}(a)\right|}{|F_{T, B}(a)|}
+\end{equation}
+
+\begin{equation}
+  \Delta_2(a) = 
+    \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B \setminus F_{T, B}(a)|}
+    \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B| - |F_{T, B}(a)|}
+\end{equation}
 
 \begin{equation}
   \Delta_{T,T'}(A, B) = \frac{1}{|A|} 

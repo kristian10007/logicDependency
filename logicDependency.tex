@@ -68,6 +68,8 @@ An open question is: can we find a function $Q$ that takes two columns of a tabl
 \begin{enumerate}
 \item The set $[m \ldots n] = \{ m, m + 1, m + 2, \ldots, n \}$ for $m \leq n$.
 
+\item $\mathcal{P}(M)$ denotes the powerset of the set $M$. So $\mathcal{P}(M) = \{ S : S \subseteq M \}$
+
 \item $T$ in a table with $M \geq 2$ columns and $N \geq 1$ rows.
 
 \item Consider two different columns in $T$.
@@ -82,7 +84,7 @@ An open question is: can we find a function $Q$ that takes two columns of a tabl
           \mbox{for all } a \in A, b \in B \mbox{ it holds that }  a \sim_T b \Leftrightarrow \mbox{ there is an } i \in [1..N] \mbox{ with }a_i = a \mbox{ and } b_i = b
       \]
 
-\item The function $F(a) = \{ b \in B : a \sim_T b \}$ gives us all possible $b \in B$ for a given $a \in A$.
+\item The function $F ; A \to \mathcal{P}(B)$ defined as $F(a) = \{ b \in B : a \sim_T b \}$ gives us all possible $b \in B$ for a given $a \in A$.
 
 %\item Let $P(a,b)$ be the conditional probability that we find a row with $(a,b)$ is in $T$ for a given $a$. E.g:
 %\[
@@ -129,18 +131,18 @@ Dividing $|A|$ gives us one solution to our wishlist for $|B| > 1$:
 \]
 If we put $a$ in the set we can omit the sum and get the easier term:
 \[
-  s'' = \frac{|\{ (a,b) : a \in A, b \in B \mbox{ and } a \sim_T b \}| - |A|}{|A| \cdot (|B| - 1)}
+  s' = \frac{|\{ (a,b) : a \in A, b \in B \mbox{ and } a \sim_T b \}| - |A|}{|A| \cdot (|B| - 1)}
 \]
 
 For the special case that there is only one value in column $B$ (e.g: $B = \{ b \}$) we have the obvious constant function $f(a) = b$.
 This leads to our final definition:
 
-\[
+\begin{equation}
 \begin{array}{lll}
- Q_T( A, B ) & = s'' & ; if |B| > 1 \\
+ Q_T( A, B ) & = \frac{|\{ (a,b) : a \in A, b \in B \mbox{ and } a \sim_T b \}| - |A|}{|A| \cdot (|B| - 1)} & ; if |B| > 1 \\
  Q_T(A, B)   &  = 0  & ; if |B| \leq 1 
 \end{array}
-\]
+\end{equation}
 
 
 \newpage
