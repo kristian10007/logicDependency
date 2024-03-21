@@ -1,4 +1,5 @@
 \section{Comparing two Tables}
+\subsection{Introduction}
 
 Let $T$ and $T'$ be tables with columns \texttt{A} and \texttt{B}.
 $T'$ might be a synthetic generated dataset from the real dataset $T$.
@@ -9,22 +10,88 @@ Now we have additionally $a \sim_{T'} b$ is true if and only if $a$ in column \t
 
 Let $\tau$ be $T$ or $T'$. Define $F_{\tau, B} : A \to \mathcal{P}(B)$ as $F_{\tau, B}(a) = \{ b \in B : a \sim_\tau b \}$
 
-\begin{equation}
+\subsection{Helping Functions}
+\subsubsection{$\Delta_1(a)$}
+First we want to have a measure on how good the positive relation got preserved ($a \sim_T b \Rightarrow a \sim_{T'} b$).
+This could archived by:
+
+\[
   \Delta_1(a) = 
     \frac{\left|F_{T, B}(a) \cap F_{T', B}(a)\right|}{|F_{T, B}(a)|}
-\end{equation}
+\]
 
-\begin{equation}
+As $0 \leq \left|F_{T, B}(a) \cap F_{T', B}(a)\right| \leq |F_{T, B}(a)|$ we have $0 \leq \Delta_1(a) \leq 1$.
+With $\Delta_1(a) = 0$ when $F_{T, B}(a)$ and $F_{T', B}(a)$ have no item in common
+and $\Delta_1(a) = 1$ when $F_{T, B}(a) \subseteq F_{T', B}(a)$.
+
+
+\subsubsection{$\Delta_2(a)$}
+Lets do the same for the complement so we can measure how good the negative relation got preserved (not $a \sim_T b \Rightarrow$ not $a \sim_{T'} b$).
+To archive this we have a look to the complement of the image of $a$.
+Assume $F_{T, B}(a) \neq B$
+\[
   \Delta_2(a) = 
     \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B \setminus F_{T, B}(a)|}
-    \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B| - |F_{T, B}(a)|}
+    = \frac{\left|B \setminus \left(F_{T, B}(a) \cup F_{T', B}(a)\right)\right|}{|B| - |F_{T, B}(a)|}
+    = \frac{|B| - \left|F_{T, B}(a) \cup F_{T', B}(a)\right|}{|B| - |F_{T, B}(a)|}
+\]
+
+As $F_{T, B}(a) \subseteq F_{T, B}(a) \cup F_{T', B}(a)$ we have $|F_{T, B}(a)| \leq |F_{T, B}(a) \cup F_{T', B}(a)|$.
+Keeping in mind that $F_{\tau, B}(a) \subseteq B$ for $\tau \in \{ T, T' \}$
+it follows that $|B| - |F_{T, B}(a)| \geq |B| - |F_{T, B}(a) \cup F_{T', B}(a)| \geq 0$.
+Therefore $0 \leq \Delta_2(a) \leq 1$.
+
+We have $\Delta_2(a) = 0$ when $B \setminus F_{T, B}(a)$ and $B \setminus F_{T', B}(a)$ have no item in common (for example when $F_{T', B}(a) = B$).
+Also we have $\Delta_2(a) = 1$ when all items in the complement of $F_{T, B}(a)$ are in the complement of $F_{T', B}(a)$ too (e.g: $F_{T', B}(a) \subseteq F_{T, B}(a)$).
+
+In case of $F_{T, B}(a) = B$ there is no element in the complement of $F_{T, B}(a)$.
+In this case we can set the value of $\Delta_2(a)$ to $1$.
+So we have:
+
+\[
+  \Delta_2(a) =
+\left\{\begin{array}{ll}
+    \frac{\left|B| - |F_{T, B}(a) \cup F_{T', B}(a)\right|}{|B| - |F_{T, B}(a)|}
+    & ; \mbox{if } F_{T, B}(a) \neq B
+    \\[1em]
+    1
+    & ; \mbox{if } F_{T, B}(a) = B
+\end{array}\right.
+\]
+
+
+\subsubsection{$\Delta_3(a)$ and $\Delta'_3(a)$}
+Combining both we get the functions $\Delta_3 : A \to [0,1]$ and $\Delta'_3 : A \to [0,1]$ that are $1$ if and only if $F_{T, B}(a) = F_{T', B}(a)$.
+\[
+  \Delta_3(a) = \Delta_1(a) \cdot \Delta_2(a)
+\]
+\[
+  \Delta'_3(a) = \frac{\Delta_1(a) + \Delta_2(a)}{2}
+\]
+
+\subsection{Our Function}
+
+Summing this values for all $a \in A$ and dividing by the size of $A$ we get our measurement \mbox{$\Delta_{T,T'} : A \times B \to [0,1]$}
+with $\Delta_{T,T'}(A, B) = 1$ if and only if $F_{T, B}(a) = F_{T', B}(a)$ for all $a \in A$.
+\begin{equation}
+  \Delta_{T,T'}(A, B) = 
+    \frac{1}{|A|} 
+    \sum_{a \in A} (\Delta_1(a) \cdot \Delta_2(a))
 \end{equation}
 
+% Alternative definition with the same meaning could be:
+% 
 \begin{equation}
-  \Delta_{T,T'}(A, B) = \frac{1}{|A|} 
-    \sum_{a \in A}
-    \frac{\left|F_{T, B}(a) \cap F_{T', B}(a)\right|}{|F_{T, B}(a)|}
-    \cdot
-    \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B \setminus F_{T, B}(a)|}
+  \Delta'_{T,T'}(A, B) = 
+    \frac{1}{2 |A|} 
+    \sum_{a \in A} (\Delta_1(a) + \Delta_2(a))
 \end{equation}
+ 
+ 
+
+
+
+\subsection{Thoughts}
+The function $\Delta_{T,T'}(A, B)$ will tend faster to zero than $\Delta'_{T,T'}(A, B)$
+
 
