@@ -7,84 +7,108 @@ So the content in the columns might differ between the tables.
 
 As before $a \sim_T b$ is true if and only if $a$ in column \texttt{A} and $b$ in column \texttt{B} are in the same row in table $T$.
 Now we have additionally $a \sim_{T'} b$ is true if and only if $a$ in column \texttt{A} and $b$ in column \texttt{B} are in the same row in table~$T'$.
+We keep $A = \{ a : a \mbox{ is in column \texttt{A} of table } T \}$ and $B = \{ b : b \mbox{ is in column \texttt{B} of table } T \}$ and add $A' = \{ a : a \mbox{ is in column \texttt{A} of table } T' \}$ as $B' = \{ b : b \mbox{ is in column \texttt{B} of table } T' \}$ and $B^* = B \cup B'$.
 
-Let $\tau$ be $T$ or $T'$. Define $F_{\tau, B} : A \to \mathcal{P}(B)$ as $F_{\tau, B}(a) = \{ b \in B : a \sim_\tau b \}$
+Let $\tau$ be $T$ or $T'$ and $M$ a set.
+Define $F_{\tau, M} : A \to \mathcal{P}(M)$ as $F_{\tau, M}(a) = \{ x \in M : a \sim_\tau x \}$.
+
+Due to the construction of $A$ and $B$ the set $F_{T,B^*}(a) = F_{T,B}(a)$ is never empty for all $a \in A$.
+But it might be that $F_{T',B^*}(a)$ is empty for some $a \in A$ as $a$ might not be in column \texttt{A} in table $T'$.
+
 
 \subsection{Helping Functions}
-\subsubsection{$\Delta_1(a)$}
+\subsubsection{$d_1 : A \to [0,1]$}
 First we want to have a measure on how good the positive relation got preserved ($a \sim_T b \Rightarrow a \sim_{T'} b$).
+Assume $F_{T, M}(a)$ is not empty. 
 This could archived by:
 
 \[
-  \Delta_1(a) = 
-    \frac{\left|F_{T, B}(a) \cap F_{T', B}(a)\right|}{|F_{T, B}(a)|}
+  d^*_{T,T',M}(a) = 
+    \frac{\left|F_{T, M}(a) \cap F_{T', M}(a)\right|}{|F_{T, M}(a)|}
 \]
 
-As $0 \leq \left|F_{T, B}(a) \cap F_{T', B}(a)\right| \leq |F_{T, B}(a)|$ we have $0 \leq \Delta_1(a) \leq 1$.
-With $\Delta_1(a) = 0$ when $F_{T, B}(a)$ and $F_{T', B}(a)$ have no item in common
-and $\Delta_1(a) = 1$ when $F_{T, B}(a) \subseteq F_{T', B}(a)$.
+
+As $0 \leq \left|F_{T, M}(a) \cap F_{T', M}(a)\right| \leq |F_{T, M}(a)|$ we have $0 \leq d^*_{T, T', M}(a) \leq 1$.
+With $d^*_{T, T', M}(a) = 0$ when $F_{T, M}(a)$ and $F_{T', M}(a)$ have no item in common
+and $d^*_{T, T', M}(a) = 1$ when $F_{T, M}(a) \subseteq F_{T', M}(a)$.
+
+In case of $F_{T, M}(a)$ is empty there is no item in $F_{T, M}(a)$ to prove the preservation of the positive relation false.
+So we set $d^*_{T, T', M}(a) = 1$ in this case.
+We get:
+\[
+  d^*_{T,T',M}(a) = 
+  \left\{\begin{array}{ll}
+    \frac{\left|F_{T, M}(a) \cap F_{T', M}(a)\right|}{|F_{T, M}(a)|}
+    & \mbox{; if } |F_{T, M}(a)| > 0
+    \\[1em] 1 & \mbox{; if } |F_{T, M}(a)| = 0
+  \end{array}\right.
+\]
 
 
-\subsubsection{$\Delta_2(a)$}
+
+\subsubsection{$d^{**}_{T,T',M} : A \to [0,1]$}
 Lets do the same for the complement so we can measure how good the negative relation got preserved (not $a \sim_T b \Rightarrow$ not $a \sim_{T'} b$).
 To archive this we have a look to the complement of the image of $a$.
-Assume $F_{T, B}(a) \neq B$
+Assume $F_{T, M}(a) \neq M$
 \[
-  \Delta_2(a) = 
-    \frac{\left|\left(B \setminus F_{T, B}(a)\right) \cap \left(B \setminus F_{T', B}(a)\right)\right|}{|B \setminus F_{T, B}(a)|}
-    = \frac{\left|B \setminus \left(F_{T, B}(a) \cup F_{T', B}(a)\right)\right|}{|B| - |F_{T, B}(a)|}
-    = \frac{|B| - \left|F_{T, B}(a) \cup F_{T', B}(a)\right|}{|B| - |F_{T, B}(a)|}
+  d^{**}_{T,T',M}(a) = 
+    \frac{\left|\left(M \setminus F_{T, M}(a)\right) \cap \left(M \setminus F_{T', M}(a)\right)\right|}{|M \setminus F_{T, M}(a)|}
+    = \frac{\left|M \setminus \left(F_{T, M}(a) \cup F_{T', M}(a)\right)\right|}{|M| - |F_{T, M}(a)|}
+    = \frac{|M| - \left|F_{T, M}(a) \cup F_{T', M}(a)\right|}{|M| - |F_{T, M}(a)|}
 \]
 
-As $F_{T, B}(a) \subseteq F_{T, B}(a) \cup F_{T', B}(a)$ we have $|F_{T, B}(a)| \leq |F_{T, B}(a) \cup F_{T', B}(a)|$.
-Keeping in mind that $F_{\tau, B}(a) \subseteq B$ for $\tau \in \{ T, T' \}$
-it follows that $|B| - |F_{T, B}(a)| \geq |B| - |F_{T, B}(a) \cup F_{T', B}(a)| \geq 0$.
-Therefore $0 \leq \Delta_2(a) \leq 1$.
+As $F_{T, M}(a) \subseteq F_{T, M}(a) \cup F_{T', M}(a)$ we have $|F_{T, M}(a)| \leq |F_{T, M}(a) \cup F_{T', M}(a)|$.
+Keeping in mind that $F_{\tau, M}(a) \subseteq M$ for $\tau \in \{ T, T' \}$
+it follows that $|M| - |F_{T, M}(a)| \geq |M| - |F_{T, M}(a) \cup F_{T', M}(a)| \geq 0$.
+Therefore $0 \leq d^{**}_{T,T',M}(a) \leq 1$.
 
-We have $\Delta_2(a) = 0$ when $B \setminus F_{T, B}(a)$ and $B \setminus F_{T', B}(a)$ have no item in common (for example when $F_{T', B}(a) = B$).
-Also we have $\Delta_2(a) = 1$ when all items in the complement of $F_{T, B}(a)$ are in the complement of $F_{T', B}(a)$ too (e.g: $F_{T', B}(a) \subseteq F_{T, B}(a)$).
+We have $d^{**}_{T,T',M}(a) = 0$ when $M \setminus F_{T, M}(a)$ and $M \setminus F_{T', M}(a)$ have no item in common (for example when $F_{T', M}(a) = M$).
+Also we have $d^{**}_{T,T',M}(a) = 1$ when all items in the complement of $F_{T, M}(a)$ are in the complement of $F_{T', M}(a)$ too (e.g: $F_{T', M}(a) \subseteq F_{T, M}(a)$).
 
-In case of $F_{T, B}(a) = B$ there is no element in the complement of $F_{T, B}(a)$.
-In this case we can set the value of $\Delta_2(a)$ to $1$.
+In case of $F_{T, M}(a) = M$ there is no element in the complement of $F_{T, M}(a)$.
+In this case we can set the value of $d^{**}_{T,T',M}(a)$ to $1$.
 So we have:
 
 \[
-  \Delta_2(a) =
+  d^{**}_{T,T',M}(a) =
 \left\{\begin{array}{ll}
-    \frac{\left|B| - |F_{T, B}(a) \cup F_{T', B}(a)\right|}{|B| - |F_{T, B}(a)|}
-    & ; \mbox{if } F_{T, B}(a) \neq B
+    \frac{\left|M| - |F_{T, M}(a) \cup F_{T', M}(a)\right|}{|M| - |F_{T, M}(a)|}
+    & ; \mbox{if } F_{T, M}(a) \neq M
     \\[1em]
     1
-    & ; \mbox{if } F_{T, B}(a) = B
+    & ; \mbox{if } F_{T, M}(a) = M
 \end{array}\right.
 \]
 
 
-\subsubsection{$\Delta_3(a)$ and $\Delta'_3(a)$}
-Combining both we get the functions $\Delta_3 : A \to [0,1]$ and $\Delta'_3 : A \to [0,1]$ that are $1$ if and only if $F_{T, B}(a) = F_{T', B}(a)$.
+\subsubsection{$d : A \to [0,1]$ and $\hat{d} : A \to [0,1]$}
+
+As $d^*_{T,T',M}(a) = 1$ when $F_{T', M}(a) \subseteq F_{T, M}(a)$ and $d^{**}_{T,T',M}(a) = 1$ when $F_{T', M}(a) \subseteq F_{T, M}(a)$ we can create functions that are $1$ if and only if $F_{T, M}(a) = F_{T', M}(a)$.
+We will use this two:
 \[
-  \Delta_3(a) = \Delta_1(a) \cdot \Delta_2(a)
-\]
-\[
-  \Delta'_3(a) = \frac{\Delta_1(a) + \Delta_2(a)}{2}
+\begin{array}{ll}
+  d(a) & = d^*_{T,T',M}(a) \cdot d^{**}_{T,T',M}(a)
+  \\[1em]
+  \hat{d}(a) & = \frac{d^*_{T,T',M}(a) + d^{**}_{T,T',M}(a)}{2}
+\end{array}
 \]
 
-\subsection{Our Function}
+\subsection{Our Table Comparing Function: $\Delta_{T,T'} : A \times B^* \to [0,1]$}
 
-Summing this values for all $a \in A$ and dividing by the size of $A$ we get our measurement \mbox{$\Delta_{T,T'} : A \times B \to [0,1]$}
-with $\Delta_{T,T'}(A, B) = 1$ if and only if $F_{T, B}(a) = F_{T', B}(a)$ for all $a \in A$.
+Summing this values for all $a \in A$ and dividing by the size of $A$ we get our measurement \mbox{$\Delta_{T,T'} : A \times B^* \to [0,1]$}
+with $\Delta_{T,T'}(A, B^*) = 1$ if and only if $F_{T, B^*}(a) = F_{T', B^*}(a)$ for all $a \in A$.
 \begin{equation}
-  \Delta_{T,T'}(A, B) = 
+  \Delta_{T,T'}(A, B^*) = 
     \frac{1}{|A|} 
-    \sum_{a \in A} (\Delta_1(a) \cdot \Delta_2(a))
+    \sum_{a \in A} (d^*_{T,T',B^*}(a) \cdot d^{**}_{T,T',B^*}(a))
 \end{equation}
 
 % Alternative definition with the same meaning could be:
 % 
 \begin{equation}
-  \Delta'_{T,T'}(A, B) = 
+  \hat{\Delta}_{T,T'}(A, B^*) = 
     \frac{1}{2 |A|} 
-    \sum_{a \in A} (\Delta_1(a) + \Delta_2(a))
+    \sum_{a \in A} (d^*_{T,T',B^*}(a) + d^{**}_{T,T',B^*}(a))
 \end{equation}
  
  
@@ -92,6 +116,6 @@ with $\Delta_{T,T'}(A, B) = 1$ if and only if $F_{T, B}(a) = F_{T', B}(a)$ for a
 
 
 \subsection{Thoughts}
-The function $\Delta_{T,T'}(A, B)$ will tend faster to zero than $\Delta'_{T,T'}(A, B)$
+The function $\Delta_{T,T'}(A, B)$ will tend faster to zero than $\hat{\Delta}_{T,T'}(A, B)$
 
 
