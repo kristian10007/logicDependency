@@ -112,8 +112,61 @@ with $\Delta_{T,T'}(A, B^*) = 1$ if and only if $F_{T, B^*}(a) = F_{T', B^*}(a)$
 \end{equation}
  
  
+$\Delta_{T,T'}(A, B^*)$ will be $0$ if there if for all $a \in A$ is
+\begin{itemize}
+\item either no $b \in B^*$ for that is $a$ in the same row in $T$ and $T'$.
+  E.g: $T'$ maps to no $b$ that $T$ does.
+\item or all $b \in B^*$ that are not in the same row with $a$ in $T$ are in the same row with $a$ in $T'$.
+  E.g: $T'$ maps to all $b$ that $T$ not maps to.
+\end{itemize}
 
+$\Delta_{T,T'}(A, B^*)$ will be $0$ if there if for all $a \in A$ is
+\begin{itemize}
+\item no $b \in B^*$ for that is $a$ in the same row in $T$ and $T'$.
+  E.g: $T'$ maps to no $b$ that $T$ does.
+\item and all $b \in B^*$ that are not in the same row with $a$ in $T$ are in the same row with $a$ in $T'$.
+  \\ E.g: $T'$ maps to all $b$ that $T$ not maps to.
+\end{itemize}
 
+Both would be $0$ in this example:
+
+\begin{center}
+\begin{tabular}{c||c|c|c|c}
+$a \sim_T b$ & $B_1$ & $B_2$ & $B_3$ & $B_4$ \\\hline\hline
+ $A_1$ & x & ~ & ~ & ~ \\
+ $A_2$ & x & x & ~ & ~ \\
+ $A_3$ & x & x & x & ~ \\
+ $A_4$ & x & x & x & x \\
+\end{tabular}
+\hspace{1cm}
+\begin{tabular}{c||c|c|c|c}
+$a \sim_T' b$ & $B_1$ & $B_2$ & $B_3$ & $B_4$ \\\hline\hline
+ $A_1$ & ~ & x & x & x \\
+ $A_2$ & ~ & ~ & x & x \\
+ $A_3$ & ~ & ~ & ~ & x \\
+ $A_4$ & ~ & ~ & ~ & ~ \\
+\end{tabular}
+\end{center}
+
+In this example only $\Delta_{T, T'}(A,B^*)$ would be $0$:
+
+\begin{center}
+\begin{tabular}{c||c|c|c|c}
+$a \sim_T b$ & $B_1$ & $B_2$ & $B_3$ & $B_4$ \\\hline\hline
+ $A_1$ & x & ~ & ~ & ~ \\
+ $A_2$ & x & x & ~ & ~ \\
+ $A_3$ & x & x & x & ~ \\
+ $A_4$ & x & x & x & x \\
+\end{tabular}
+\hspace{1cm}
+\begin{tabular}{c||c|c|c|c}
+$a \sim_T' b$ & $B_1$ & $B_2$ & $B_3$ & $B_4$ \\\hline\hline
+ $A_1$ & ~ & x & ~ & ~ \\
+ $A_2$ & x & x & x & x \\
+ $A_3$ & ~ & ~ & x & x \\
+ $A_4$ & ~ & ~ & ~ & ~ \\
+\end{tabular}
+\end{center}
 
 \subsection{Thoughts}
 The function $\Delta_{T,T'}(A, B)$ will tend faster to zero than $\hat{\Delta}_{T,T'}(A, B)$
